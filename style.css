@@ -42,7 +42,6 @@ nav .navBar {
     margin-right: 150px;
 }
 nav .navBar .logo h2 {
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     color: #555;
 }
 .navBar .menulinks{
@@ -111,7 +110,7 @@ main p{
 
 .leftSide p {
   font-size: 14px;
-  color: #555;
+  color: #9b9797;
   margin-bottom: 50px;
   font-weight: bold;
   display: flex;
@@ -150,8 +149,9 @@ main .errorBox{
     flex-direction: column;
     justify-content: flex-start;
     gap: 10px;
-    
-
+}
+main .errorBox span{
+  font-size: 10px;
 }
 .contactUsForm button {
     background-color: green;
