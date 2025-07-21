@@ -219,7 +219,7 @@ main .errorBox span{
 
 .uploadBox{
     border: 1px dashed #ccc;
-  padding: 30px;
+  padding: 40px;
   display: flex;
   justify-content: center;
   align-items: left;
