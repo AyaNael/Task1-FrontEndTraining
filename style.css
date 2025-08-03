@@ -69,7 +69,8 @@ body {
 }
 
 .menu-links li a:hover {
-  box-shadow: 2px 2px lightgray;
+  color: gold;
+  transition: all 0.3s ease;
 }
 
 main p {
@@ -265,14 +266,20 @@ main .error-box span {
   border-radius: 2px;
 }
 
+
 @media screen and (max-width: 426px) {
 
   .nav-bar {
     box-shadow: none;
     background-color: rgba(0, 0, 0, 0);
-    padding-left: 15px !important ;
+    padding-left: 15px !important;
     padding-top: 15px !important;
 
+  }
+
+  .menu-links li a {
+    font-weight: 300;
+    padding: 4px 5px;
   }
 
   .nav-bar-container {
@@ -280,12 +287,12 @@ main .error-box span {
   }
 
   .nav-bar .menu-icon {
-    display: block; 
+    display: block;
   }
 
   .contact-container {
     grid-template-columns: 1fr;
-    padding-inline: 15px  !important;
+    padding-inline: 15px !important;
     padding-top: 80px;
 
   }
@@ -363,23 +370,57 @@ main .error-box span {
   }
 
   .nav-bar-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .menu-links {
+    position: fixed;
+    top: 0;
+    left: -260px;
+    width: 200px;
+    height: 100%;
+    flex-direction: column;
+    background-color: whitesmoke;
+    padding: 40px 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    transition: left 0.3s ease;
+    z-index: 9999;
+    padding: 60px 20px !important;
+    gap: 30px;
+  }
+
+
+  .menu-links li a {
+    font-size: 15px !important;
+    font-weight: 500;
+    padding: 8px 10px;
+    transition: color 0.3s;
+  }
+
+  .logo-icon {
     display: none;
   }
 
-  .nav-bar .menu-icon {
-    display: block; 
+  .menu-links.open {
+    left: 0;
+
   }
 
-  .nav-bar-container .menu-links a{
-    font-size: 10px;
+  .nav-bar .menu-icon {
+    display: block;
   }
- 
-   .nav-bar-container h2{
+
+
+
+  .nav-bar-container h2 {
     font-size: 20px;
   }
+
   .nav-bar-container {
     padding-inline: 30px;
   }
+
   .form-row {
     flex-direction: column;
     gap: 50px;
@@ -397,6 +438,27 @@ main .error-box span {
 
   .right-side .section {
     gap: 25px;
+  }
+
+  .drawer-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    /* لون باهت */
+    z-index: 999;
+    /* أقل من القائمة مباشرة */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  /* عند التفعيل */
+  .drawer-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
   }
 }
 
