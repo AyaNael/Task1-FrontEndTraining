@@ -1,35 +1,98 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const navLinks = document.querySelectorAll(".menu-links li a");
+// Wait until the DOM is fully loaded
+document.addEventListener("DOMContentLoaded", () => {
+  const navLinks = document.querySelectorAll(".menu-links li a");
+  const menuIcon = document.querySelector('.menu-icon');
+  const menuLinks = document.querySelector('.menu-links');
+  const overlay = document.getElementById('drawerOverlay');
+  const mainContent = document.querySelector('main');
 
-    navLinks.forEach(link => {
-        link.addEventListener("click", function () {
-            // remove class from all links
-            navLinks.forEach(l => l.classList.remove("active-link"));
+  // Highlight the correct menu link and load content on first load
+  const initialPage = window.location.hash.substring(1) || "contact";
+  loadPageContent(initialPage);
+  updateActiveLink(initialPage);
 
-            // add class for the clicked linked
-            this.classList.add("active-link");
-        });
-    });
-});
-const menuIcon = document.querySelector('.menu-icon');
-const menuLinks = document.querySelector('.menu-links');
-const overlay = document.getElementById('drawerOverlay');
+  // Toggle menu open/close when menu icon is clicked (mobile view)
+  menuIcon.addEventListener('click', () => {
+    menuLinks.classList.toggle('open');       // Slide menu in/out
+    overlay.classList.toggle('active');       // Show/hide dark overlay
+  });
 
-menuIcon.addEventListener('click', () => {
-    menuLinks.classList.toggle('open');
-    overlay.classList.toggle('active');
-
-});
-overlay.addEventListener('click', () => {
+  // Close menu when overlay is clicked (mobile view)
+  overlay.addEventListener('click', () => {
     menuLinks.classList.remove('open');
     overlay.classList.remove('active');
-});
+  });
 
-// إغلاق القائمة بعد الضغط على أي رابط)
-menuLinks.querySelectorAll("a").forEach(link => {
+  // Close menu and remove overlay after clicking a link (mobile view)
+  menuLinks.querySelectorAll("a").forEach(link => {
     link.addEventListener("click", () => {
-        menuLinks.classList.remove("open");
-        overlay.classList.remove('active');
-
+      menuLinks.classList.remove("open");
+      overlay.classList.remove("active");
     });
+  });
+
+  // When any nav link is clicked
+  navLinks.forEach(link => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault(); // Prevent default anchor behavior
+      //substring(1) to get the second element after #
+      const page = link.getAttribute('href').substring(1); // Get page name from href (e.g. 'contactUs' from '#contactUs')
+      loadPageContent(page);  // Load corresponding HTML content
+      updateActiveLink(page); // Highlight the active link
+      history.pushState(null, "", `#${page}`); // Update the URL hash without reloading
+    });
+  });
+
+  // Load correct page on hash change (back/forward buttons)
+  window.addEventListener('hashchange', () => {
+    const hashPage = window.location.hash.substring(1);
+    loadPageContent(hashPage);
+    updateActiveLink(hashPage);
+  });
+
+  // Function to load content dynamically into <main>
+  function loadPageContent(page) {
+    mainContent.innerHTML = `<p class="loader">Loading...</p>`;
+
+    if (page === "about") {
+      fetch("https://jsonplaceholder.typicode.com/posts/1")
+        .then(res => res.json())
+        .then(data => {
+          mainContent.innerHTML = `
+            <section class="about-api">
+              <h2>About Us (from API)</h2>
+              <h3>${data.title}</h3>
+              <p>${data.body}</p>
+            </section>
+          `;
+        })
+        .catch(() => {
+          mainContent.innerHTML = `<p>Failed to load About info.</p>`;
+        });
+      return; // Stop here - don’t load about.html
+    }
+   fetch(`${page}.html`)
+    .then(res => res.text())
+    .then(htmlText => {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(htmlText, 'text/html');
+      const pageMain = doc.querySelector('main');
+      if (pageMain) {
+        mainContent.innerHTML = pageMain.innerHTML;
+      } else {
+        mainContent.innerHTML = `<p>Main not found in ${page}.html</p>`;
+      }
+    })
+    .catch(() => {
+      mainContent.innerHTML = `<p>Error loading page "${page}"</p>`;
+    });
+  }
+
+  // Function to highlight active navigation link
+  function updateActiveLink(currentPage) {
+    navLinks.forEach(link => {
+      const page = link.getAttribute('href').substring(1);
+      link.classList.toggle('active-link', page === currentPage);
+    });
+  }
 });

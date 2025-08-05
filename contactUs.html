@@ -1,53 +1,81 @@
 <!DOCTYPE html>
 <html>
-    <head>
-      <meta charset="UTF-8">
-      <title>Contact Us Page</title>
-      <link rel="styleSheet" href="style.css">
-      <meta name="description" content="Task1">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
-    </head>
-    <body>
-        <header>
-          <h2>Contact Us</h2>
-          <h4>Need an experienced and skilled hand with custom IT projects?<br> 
-          Fill out the form to get a free consultation.</h4>
-        </header>
-    
-        <main>
+<head>
+    <meta charset="UTF-8">
+    <title>Contact Us</title>
+    <link rel="styleSheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="app.js" defer></script>
+</head>
 
-            <form action="" method="POST" class="contactUsForm">
-                <label for="companyName">Your Comoany Name</label><br>
-                <input type="text" id="companyName"><br>
-                <label for="bussinessType">Nature of Bussiness</label><br>
-                <input type="text" id="bussinessType"><br>
-                <label for="address">Address</label>
-                <input type="text" id="address">
-                <label for="postcode">Postcode</label>
-                <input type="text" id="postcode">
-                <label for="contactName">Contact name</label>
-                <input type="text" id="contactName">
-                <label for="contactPhone">Contact phone</label>
-                <input type="tel" id="contactPhone">   
-                <label for="email">Email</label>
-                <input type="email" id="email">  
-                <label for="linkedIn">Linked In</label>
-                <input type="url" id="linkedIn">
-                <label for="description">Let’s talk about your idea</label>
-                <input type="text" id="description">   
-                <div class="uploadFile">
-                    <label for="uploadLabel">
-                        <i class="fas fa-upload"></i>Upload Additional file</label>
-                    <input type="file" id="uploadFile">
-                     <small>Attach file. File size of your documents should not exceed 10MB</small>
+<body>
+    <main class="contact-container">
 
+        <div class="left-side">
+            <h1 class="title">Contact Us</h1>
+            <p>Need an experienced and skilled hand with custom IT projects?<br>
+                Fill out the form to get a free consultation.
+            <p>
+
+            <form action="" method="POST" class="contact-form">
+                <input type="text" placeholder="Your Company Name">
+                <input type="text" placeholder="Nature of Business">
+
+                <div class="form-row">
+                    <input type="text" placeholder="Address">
+                    <input type="text" placeholder="Postcode">
+                </div>
+
+                <input type="text" placeholder="Contact Name">
+                <input type="tel" placeholder="Contact Phone">
+                <div class="error-box">
+                    <input type="email" placeholder="email@gmail">
+                    <span class="error">Please, enter valid email address</span>
+                </div>
+                <input type="url" placeholder="LinkedIn">
+                <input type="text" placeholder="Let's talk about your idea">
+
+                <div class="upload-box">
+                    <label for="uploadFile" class="upload-label">
+                        <i class="fa-solid fa-upload"></i>Upload Additional file
+                    </label>
+                    <input type="file" id="uploadFile" class="upload-input">
+                </div>
+                <small class="upload-note">Attach file. File size of your documents should not exceed 10MB</small>
+
+                <button type="submit" class="submitBt">SUBMIT</button>
+
+                <div class="checkbox">
+                    <input type="checkbox" id="nda">
+                    <label for="nda">I want to protect my data by signing an NDA</label>
                 </div>
             </form>
-        </main>
-        <aside>
+        </div>
+        <div class="right-side">
+            <div class="section">
+                <h3>Offices</h3>
+                <p>United States<br>500 5th Avenue Suite 400, NY 10110</p>
+                <p>United Kingdom<br>High St, Bromley BR1 1DN</p>
+                <p>France<br>80 avenue des Terroirs de France, Paris</p>
+            </div>
+            <div class="section">
+                <h3>For Quick Inquiries</h3>
+                <p><img src="https://flagcdn.com/gb.svg" alt="UK" class="flag"> +44 7777777777</p>
+                <p><img src="https://flagcdn.com/us.svg" alt="USA" class="flag"> +1 3333333330</p>
+            </div>
+            <div class="section">
+                <h3>Would you like to join our news-letter?</h3>
+                <div class="news-letter">
+                    <input type="email" placeholder="Email">
+                    <button><i class="fas fa-check"></i></button>
+                </div>
+            </div>
 
-        </aside>
-    </body>
+        </div>
+    </main>
+</body>
+
 </html>
