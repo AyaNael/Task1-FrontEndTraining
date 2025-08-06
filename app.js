@@ -1,4 +1,3 @@
-// Wait until the DOM is fully loaded
 document.addEventListener("DOMContentLoaded", () => {
   const navLinks = document.querySelectorAll(".menu-links li a");
   const menuIcon = document.querySelector('.menu-icon');
@@ -7,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const mainContent = document.querySelector('main');
 
   // Highlight the correct menu link and load content on first load
-  const initialPage = window.location.hash.substring(1) || "contact";
+  const initialPage = window.location.hash.substring(1) || "contactUs";
   loadPageContent(initialPage);
   updateActiveLink(initialPage);
 
@@ -55,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
     mainContent.innerHTML = `<p class="loader">Loading...</p>`;
 
     if (page === "about") {
-      fetch("https://jsonplaceholder.typicode.com/posts/1")
+      fetch("https://jsonplaceholder.typicode.com/posts/")
         .then(res => res.json())
         .then(data => {
           mainContent.innerHTML = `
@@ -71,21 +70,14 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       return; // Stop here - don’t load about.html
     }
-   fetch(`${page}.html`)
-    .then(res => res.text())
-    .then(htmlText => {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(htmlText, 'text/html');
-      const pageMain = doc.querySelector('main');
-      if (pageMain) {
-        mainContent.innerHTML = pageMain.innerHTML;
-      } else {
-        mainContent.innerHTML = `<p>Main not found in ${page}.html</p>`;
-      }
-    })
-    .catch(() => {
-      mainContent.innerHTML = `<p>Error loading page "${page}"</p>`;
-    });
+    fetch(`${page}.html`)
+      .then(res => res.text())
+      .then(htmlText => {
+        mainContent.innerHTML = htmlText;
+      })
+      .catch(() => {
+        mainContent.innerHTML = `<p>Error loading page "${page}"</p>`;
+      });
   }
 
   // Function to highlight active navigation link
