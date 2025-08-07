@@ -6,7 +6,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const mainContent = document.querySelector('main');
 
   // Highlight the correct menu link and load content on first load
-  const initialPage = window.location.hash.substring(1) || "contactUs";
+  const path = window.location.pathname;
+  let initialPage = "contactUs";
+
+  if (path !== "/" && path !== "/index.html") {
+    initialPage = path.replace("/", "").replace(".html", "");
+  }
   loadPageContent(initialPage);
   updateActiveLink(initialPage);
 
@@ -33,29 +38,30 @@ document.addEventListener("DOMContentLoaded", () => {
   // When any nav link is clicked
   navLinks.forEach(link => {
     link.addEventListener("click", (e) => {
-      e.preventDefault(); // Prevent default anchor behavior
-      //substring(1) to get the second element after #
-      const page = link.getAttribute('href').substring(1); // Get page name from href (e.g. 'contactUs' from '#contactUs')
-      loadPageContent(page);  // Load corresponding HTML content
-      updateActiveLink(page); // Highlight the active link
-      history.pushState(null, "", `#${page}`); // Update the URL hash without reloading
+      e.preventDefault();
+      const page = link.dataset.page;  // استخدام data attribute
+      history.pushState({ page }, "", `/${page}`);
+      loadPageContent(page);
+      updateActiveLink(page);
     });
   });
 
   // Load correct page on hash change (back/forward buttons)
 
   // Load correct page on hash change (back/forward buttons)
-  window.addEventListener('hashchange', () => {
-    const hashPage = window.location.hash.substring(1);
-    loadPageContent(hashPage);
-    updateActiveLink(hashPage);
+  window.addEventListener("popstate", (e) => {
+    const path = window.location.pathname;
+    const page = path === "/" ? "contactUs" : path.slice(1);
+    loadPageContent(page);
+    updateActiveLink(page);
   });
+
 
   // Function to load content dynamically into <main>
   function loadPageContent(page) {
     mainContent.innerHTML = `<p class="loader">Loading...</p>`;
     // Reset class based on page
-    mainContent.className = "main-container"; 
+    mainContent.className = "main-container";
 
     switch (page) {
       case "contactUs":
@@ -107,6 +113,10 @@ document.addEventListener("DOMContentLoaded", () => {
       .catch(() => {
         mainContent.innerHTML = `<p>Error loading page "${page}.html"</p>`;
       });
+
+
+ 
+
 
   }
 
