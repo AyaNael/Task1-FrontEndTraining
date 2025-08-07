@@ -18,6 +18,10 @@ body {
   background-color: whitesmoke;
 }
 
+input[type="checkbox"]:checked {
+  accent-color: green;
+}
+
 .nav-bar-container {
   max-width: 1440px;
   width: 100%;
@@ -308,6 +312,7 @@ main p {
   gap: 5px;
   margin: auto;
 
+  align-items: center;
 }
 
 .terms-text {
@@ -339,6 +344,7 @@ main p {
   text-decoration: underline;
   padding: 5px;
 }
+
 .toast {
   visibility: hidden;
   min-width: 250px;
@@ -380,10 +386,11 @@ main p {
   height: 13px;
 }
 
-.checkbox-container{
+.checkbox-container {
   display: block;
   gap: 5px;
 }
+
 @media screen and (max-width: 426px) {
 
   .nav-bar {
