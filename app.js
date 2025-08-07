@@ -6,9 +6,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const mainContent = document.querySelector('main');
 
   // Highlight the correct menu link and load content on first load
-  const currentPath = window.location.pathname.slice(1) || "contactUs";
-  loadPageContent(currentPath);
-  updateActiveLink(currentPath);
+  const initialPage = window.location.hash.substring(1) || "contactUs";
+  loadPageContent(initialPage);
+  updateActiveLink(initialPage);
 
   // Toggle menu open/close when menu icon is clicked (mobile view)
   menuIcon.addEventListener('click', () => {
@@ -33,19 +33,20 @@ document.addEventListener("DOMContentLoaded", () => {
   // When any nav link is clicked
   navLinks.forEach(link => {
     link.addEventListener("click", (e) => {
-      e.preventDefault();
-      const page = link.getAttribute('href').replace('/', '');
-      history.pushState({ page }, "", `/${page}`); // يغير الرابط بدون إعادة تحميل الصفحة.
-      loadPageContent(page);
-      updateActiveLink(page);
+      e.preventDefault(); // Prevent default anchor behavior
+      //substring(1) to get the second element after #
+      const page = link.getAttribute('href').substring(1); // Get page name from href (e.g. 'contactUs' from '#contactUs')
+      loadPageContent(page);  // Load corresponding HTML content
+      updateActiveLink(page); // Highlight the active link
+      history.pushState(null, "", `#${page}`); // Update the URL hash without reloading
     });
   });
 
-  // Back/Forward navigation
-  window.addEventListener('popstate', (e) => {
-    const path = window.location.pathname.slice(1) || "contactUs";
-    loadPageContent(path);
-    updateActiveLink(path);
+  // Load correct page on hash change (back/forward buttons)
+  window.addEventListener('hashchange', () => {
+    const hashPage = window.location.hash.substring(1);
+    loadPageContent(hashPage);
+    updateActiveLink(hashPage);
   });
 
   // Function to load content dynamically into <main>
@@ -53,23 +54,22 @@ document.addEventListener("DOMContentLoaded", () => {
     mainContent.innerHTML = `<p class="loader">Loading...</p>`;
 
     if (page === "about") {
-      fetch("https://jsonplaceholder.typicode.com/posts/1")
+      fetch("https://jsonplaceholder.typicode.com/posts/")
         .then(res => res.json())
         .then(data => {
           mainContent.innerHTML = `
-          <section class="about-api">
-            <h2>About Us (from API)</h2>
-            <h3>${data.title}</h3>
-            <p>${data.body}</p>
-          </section>
-        `;
+            <section class="about-api">
+              <h2>About Us (from API)</h2>
+              <h3>${data.title}</h3>
+              <p>${data.body}</p>
+            </section>
+          `;
         })
         .catch(() => {
           mainContent.innerHTML = `<p>Failed to load About info.</p>`;
         });
-      return;
+      return; // Stop here - don’t load about.html
     }
-
     fetch(`${page}.html`)
       .then(res => res.text())
       .then(htmlText => {
