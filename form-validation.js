@@ -47,8 +47,8 @@ function activateValidation(form) {
 
         if (isValid) {
             showToast("Form submitted successfully!");
-            form.reset(); // تفريغ الحقول
-            termsAccepted = false; // إعادة ضبط حالة الموافقة
+            form.reset(); // clear form fields
+            termsAccepted = false; 
             uploadNote.innerText = "Attach file. File size of your documents should not exceed 10MB";
             uploadNote.style.color = "";
             // إزالة كل الكلاسات success
@@ -98,7 +98,7 @@ function activateValidation(form) {
 
         setTimeout(() => {
             toast.classList.remove("show");
-        }, 3000); // 3 ثوانٍ
+        }, 5000); // 3 ثوانٍ
     };
 
     const validateNewsletter = () => {
@@ -269,7 +269,9 @@ function activateValidation(form) {
 
     };
 
+    const clearFormFields = () => {
 
+    }
     const validateInputs = () => {
         validateCompany();
         validateBusiness();

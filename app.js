@@ -43,6 +43,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Load correct page on hash change (back/forward buttons)
+
+  // Load correct page on hash change (back/forward buttons)
   window.addEventListener('hashchange', () => {
     const hashPage = window.location.hash.substring(1);
     loadPageContent(hashPage);
@@ -52,33 +54,62 @@ document.addEventListener("DOMContentLoaded", () => {
   // Function to load content dynamically into <main>
   function loadPageContent(page) {
     mainContent.innerHTML = `<p class="loader">Loading...</p>`;
+    // Reset class based on page
+    mainContent.className = "main-container"; 
 
-    if (page === "about") {
-      fetch("https://jsonplaceholder.typicode.com/posts/")
-        .then(res => res.json())
-        .then(data => {
-          mainContent.innerHTML = `
-            <section class="about-api">
-              <h2>About Us (from API)</h2>
-              <h3>${data.title}</h3>
-              <p>${data.body}</p>
-            </section>
-          `;
-        })
-        .catch(() => {
-          mainContent.innerHTML = `<p>Failed to load About info.</p>`;
-        });
-      return; // Stop here - don’t load about.html
+    switch (page) {
+      case "contactUs":
+        mainContent.classList.add("contact-container");
+        break;
+      case "products":
+        mainContent.classList.add("product-container");
+        break;
+      case "services":
+        mainContent.classList.add("services-container");
+        break;
+      default:
+        mainContent.classList.add("default-container");
     }
+
     fetch(`${page}.html`)
       .then(res => res.text())
       .then(htmlText => {
         mainContent.innerHTML = htmlText;
+
+        // 🟡 بعد ما نحط محتوى products.html داخل <main>
+        if (page === "products") {
+          fetch("https://dummyjson.com/products/category/laptops")
+            .then(res => res.json())
+            .then(data => {
+              const products = data.products;
+              const html = products.map(product => `
+              <div class="product-card">
+                <img src="${product.thumbnail}" alt="${product.title}" class="product-img">
+                <h3>${product.title}</h3>
+                <p>${product.description}</p>
+                <p><strong>Price:</strong> $${product.price}</p>
+                <p><strong>Category:</strong> ${product.category}</p>
+                <button>Add to Cart</button>
+              </div>
+            `).join("");
+              const container = document.querySelector(".product-grid");
+              if (container) {
+                container.innerHTML = html;
+              } else {
+                mainContent.innerHTML = `<p>.product-grid not found in products.html</p>`;
+              }
+            })
+            .catch(() => {
+              mainContent.innerHTML = `<p> Failed to load products from API.</p>`;
+            });
+        }
       })
       .catch(() => {
-        mainContent.innerHTML = `<p>Error loading page "${page}"</p>`;
+        mainContent.innerHTML = `<p>Error loading page "${page}.html"</p>`;
       });
+
   }
+
 
   // Function to highlight active navigation link
   function updateActiveLink(currentPage) {
@@ -87,4 +118,4 @@ document.addEventListener("DOMContentLoaded", () => {
       link.classList.toggle('active-link', page === currentPage);
     });
   }
-});
+}); 
